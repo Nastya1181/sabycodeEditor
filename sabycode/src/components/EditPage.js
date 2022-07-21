@@ -64,7 +64,7 @@ useEffect(() => {
   }}, [isClosedMeeting]);
 
   const memoizedCallback = useCallback(() => {
-    const socket = new WebSocket("ws://localhost:5000/");
+    const socket = new WebSocket(process.env.WS_BASE_URL); //"ws://localhost:5000/"
     socket.onopen = (event) => {
       socket.send(
         JSON.stringify({
