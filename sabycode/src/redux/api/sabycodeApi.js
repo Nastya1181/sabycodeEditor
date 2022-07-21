@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const BASE_URL = process.env.HTTP_BASE_URL
-/* 'http://localhost:5000/api' */
+const BASE_URL = process.env.REACT_APP_HTTP_BASE_URL
 
 export const sabycodeApi = createApi({
     reducerPath: 'sabycodeApi',
