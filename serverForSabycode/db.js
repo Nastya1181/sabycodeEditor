@@ -1,6 +1,4 @@
 const {Sequelize} = require('sequelize');
-const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../../../.env_connect')});
 
 // данные для подключения к базе данных
 

@@ -1,5 +1,4 @@
 const path = require('path');
-require('dotenv').config();
 const express = require('express');
 const app = express();
 const WSServer = require('express-ws')(app);
@@ -12,12 +11,12 @@ const authMiddleware = require('./middlewares/auth-middleware');
 const fs = require('fs');
 const {Session} = require('./models/models');
 
-require('dotenv').config({ path: path.resolve(__dirname, '../../../.env_connect')});
+require('dotenv').config();
 
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.HTTP_URL_FRONT,
     credentials: true
 }));
 app.use(cookieParser());
