@@ -1,0 +1,21 @@
+.user-selection_green {
+    position: absolute;
+    background:rgba(6, 214, 6, 0.411);
+}
+
+.user-cursor_green {
+    position: absolute;
+    background: rgb(6, 214, 6);
+    width: 2px !important;
+}
+
+.user-selection_yellow {
+    position: absolute;
+    background: rgba(233, 243, 50, 0.233);
+}
+
+.user-cursor_yellow {
+    position: absolute;
+    background: rgb(233, 243, 50);
+    width: 3px !important;
+}

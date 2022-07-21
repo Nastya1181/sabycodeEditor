@@ -1,0 +1,352 @@
+*{padding: 0;margin: 0;border: 0;}
+a,a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+button{cursor: pointer;}
+
+.form {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    
+}
+
+.main__input {
+    width: 600px;
+    height: 600px;
+    
+}
+
+.but {
+    width: 167px;
+    margin-top: 10px;
+    
+}
+
+.cursor {
+    z-index: 999;
+    position: absolute;
+    box-sizing: border-box;
+    border-left: 2px solid;
+    transform: translatez(0);
+
+    
+
+    color: #000000;
+}
+
+.header {
+    box-sizing: border-box;
+    height: 70px;
+    background: #F2F2F2;
+    border-bottom: 1px solid #DFDFDF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.header__logo__possion{
+    float: left;
+    margin-top: 15px;
+    margin-left: 20px;
+    width: 141px;
+}
+.header__logo {
+    display: block;
+    width: 141px;
+    height: 50px;
+    background: no-repeat url('./imgs/logo.svg'); 
+}
+.main {
+    height: calc(100vh - 70px);
+    background: #FFFFFF;
+    overflow-x: hidden;
+}
+.auth{
+    margin:0 auto;
+    padding-top: 57px;
+    width: 280px;
+}
+
+.auth-header {
+/* Аутенфикация */
+    margin-top: 57px;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    height: 39px;
+    font-family: 'Tahoma';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    /* identical to box height */
+    color: #000000;
+}
+
+
+.auth-sbis {
+/* Текст-адрес */
+    
+    margin-top: 54px;
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    background: #3B6F99;
+    border-radius: 5px;
+}
+
+.auth-sbis__text {
+    padding-top: 12px;
+    padding-right: 10px;
+    font-family: 'Tahoma';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    /* identical to box height */
+    color: white;
+    
+}
+.auth-sbis__logo {
+    /* Rectangle 11 */
+    float: left;
+    width: 40px;
+    height: 40px;
+    background: no-repeat url('./imgs/sbis_login.svg');
+
+    border-radius: 5px;
+ }
+.auth__line{
+    text-align: center;
+    overflow: hidden;
+    padding-top: 19px;
+    padding-bottom: 19px;
+}
+.auth__line span{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+}
+.auth__line:before,
+.auth__line:after {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    width: 120px;
+    height: 1px;
+    background-color: black;
+    position: relative;
+}
+.auth__line:before {
+    margin-left: -80%;
+    left: -14px;
+}
+.auth__line:after {
+    margin-right: -80%;
+    right: -14px;
+}
+.auth-guest {
+    /* Rectangle 12 */
+    display: block;
+    width: 280px;
+    height: 40px;
+    background: #3B6F99;
+    border-radius: 5px;
+}
+.auth-guest__text {
+    /* Войти как гость */
+    margin: 0 auto;
+    padding-top: 12px;
+    padding-left: 10px;
+    width: 120px;
+    font-family: 'Tahoma';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+
+/* identical to box height */
+
+
+color: #FFFFFF;
+
+}
+
+
+.invite-button {
+/* Кнопка */
+
+
+/* Auto layout */
+    float: left;
+    display: block;
+    padding: 5px 10px;
+    gap: 10px;
+    margin-left: 100px;
+    margin-top: 15px;
+    text-align: center;
+    height: 40px;
+    background: #3B6F99;
+    border-radius: 5px;
+}
+
+
+.invite-button__text {
+    
+    height: 14px;
+    font-family: 'Tahoma';
+    
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    text-align: center;
+    color: #FFFFFF;
+
+
+/* Inside auto layout */
+
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+.exit__buttom{
+    height: 40px;
+    background: #3B6F99;
+    float: left;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin-left: 20px;
+    color: white;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    width: 55px;
+}
+.event__log{
+    height: 40px;
+    background: #3B6F99;
+    float: left;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin-left: 20px;
+    color: white;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    width: 115px;
+}
+
+.buttons{
+    position: relative;
+    float: right;
+}
+.select-fontSize {
+    /* Селект-бар */
+/* Auto layout */
+    color: white;
+    gap: 10px;
+    padding-left: 10px;
+    position: absolute;
+    width: 78.43px;
+    height: 30px;
+    top: 10px;
+    right: 15px;
+    background: #3B6F99;
+    border-radius: 5px;
+    z-index: 1000;
+    font-family: 'Tahoma';
+    font-style: normal;
+    font-weight: 700;
+}
+.select-fontSize:hover{
+    cursor: pointer;
+}
+.select-language {
+    /* Селект-бар */
+/* Auto layout */
+
+    padding-left: 10px;
+    color: white;
+    z-index: 1000;
+    position: absolute;
+
+    height: 30px;
+    top: 10px;
+    right: 115px;
+    background: #3B6F99;
+    border-radius: 5px;
+    font-family: 'Tahoma';
+    font-style: normal;
+    font-weight: 700;
+}
+.select-language:hover{
+    cursor: pointer;
+}
+.input__content{
+    margin-top: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 20%;
+    
+    padding: 20px 50px;
+    text-align: center;
+}
+.input__text{
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.login-button {
+    width: 100px;
+    height: 30px;
+}
+.guest__input{
+    border: solid 1px black;
+    border-width: 1px 1px;
+    height: 20px;
+    width: 280px;
+}
+
+
+.log__name{
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 76px;
+    font-size: 40px;
+}
+.font__header{
+    font-size: 14px;
+    font-weight: 700;
+}
+.table{
+    display: flex;
+    margin: 0 auto;
+    width: 1060px;
+    border-bottom: 2px #3B6F99 solid;
+    font-weight: 400px;
+}
+.table div{
+    padding: 10px; 
+
+}
+.family{
+    width: 500px;
+}
+.begin{
+    width: 110px;
+}
+.named__lang{
+    width: 140px;
+}
+.edit{
+    width: 110px;
+}
+.delete{
+    margin: 0 auto;
+}
+.delete__logo{
+    margin: 0 auto;
+    background-color: white;
+}
