@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const app = express();
@@ -10,8 +11,6 @@ const cookieParser = require('cookie-parser');
 const authMiddleware = require('./middlewares/auth-middleware');
 const fs = require('fs');
 const {Session} = require('./models/models');
-
-require('dotenv').config();
 
 const PORT = process.env.PORT || 5000;
 
