@@ -21,7 +21,7 @@ tagTypes: ['Session'],
         login: builder.mutation({
             query(data) {
                 return {
-                    url: '/api/user/login',
+                    url: '/user/login',
                     method: 'POST',
                     body: data,
                     credentials: 'include',
@@ -33,7 +33,7 @@ tagTypes: ['Session'],
         logout: builder.mutation({
             query() {
                 return {
-                    url: '/api/user/logout',
+                    url: '/user/logout',
                     method: 'POST',
                    /*  body: data, */
                     credentials: 'include',
@@ -44,7 +44,7 @@ tagTypes: ['Session'],
         addFile: builder.mutation({
             query(data) {
                 return {
-                    url: '/api/session/addFile',
+                    url: '/session/addFile',
                     method: 'POST',
                     body: data,
                     credentials: 'include',
@@ -55,14 +55,14 @@ tagTypes: ['Session'],
         }),
         getConnections: builder.query({
             query: () => ({
-                url: '/api/sessionList/getConnections',
+                url: '/sessionList/getConnections',
             }),
             providesTags: result => ['Session']
         }),
         removeConnection: builder.mutation({
             query(data) {
                 return {
-                    url: '/api/sessionList/removeConnection',
+                    url: '/sessionList/removeConnection',
                     method: 'POST',
                     body: data,
                     credentials: 'include',
