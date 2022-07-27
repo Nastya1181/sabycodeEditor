@@ -30,5 +30,5 @@ export default function LogOutButton(props) {
     navigate('/', { replace: true });
   }
 
-  return <button className="exit__buttom" onClick={(e) => handleSignOut(e)}>ВЫЙТИ</button>;
+  return <button className="exit__buttom" onClick={(e) => handleSignOut(e)}>Выйти</button>;
 }

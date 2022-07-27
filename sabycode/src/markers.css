@@ -19,3 +19,25 @@
     background: rgb(233, 243, 50);
     width: 3px !important;
 }
+
+.user-selection_pink {
+    position: absolute;
+    background: rgb(250, 144, 227);
+}
+
+.user-cursor_pink {
+    position: absolute;
+    background: rgb(250, 90, 215);
+    width: 3px !important;
+}
+
+.user-selection_purple {
+    position: absolute;
+    background:  rgba(188, 49, 252, 0.486);
+}
+
+.user-cursor_purple{
+    position: absolute;
+    background: rgb(188, 49, 252);
+    width: 3px !important;
+}
