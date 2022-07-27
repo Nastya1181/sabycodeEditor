@@ -1,5 +1,5 @@
-require('dotenv').config();
 const path = require('path');
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const WSServer = require('express-ws')(app);
@@ -23,7 +23,6 @@ app.use(express.json());
 
 app.use(express.static(path.resolve(__dirname, 'sessions'))); // endpoint с именем файла отдаст файл как статику
 app.use('/api', router);
-
 
 // запускаем sequelize и само приложение
 
@@ -58,10 +57,23 @@ app.ws('/', (ws) => {
             case 'markersUpdate':
                 markersUpdate(ws, messageJSON); 
                 break;
-            case 'disconnection':
-                disconnection(ws, messageJSON); 
-                break;
         }
+    })
+    ws.on('close', () => {
+        let infoUser = [];
+        aWss.clients.forEach(client => { 
+            if (client.id === ws.id) { 
+                infoUser.push({
+                    username: client.username,
+                    color: client.color
+                })
+            } 
+        });
+        aWss.clients.forEach(client => { 
+            if (client.id === ws.id) { 
+                client.send(JSON.stringify({event: 'userUpdate', users: infoUser, color: ws.color})); 
+            } 
+        });
     })
 });
 
@@ -86,6 +98,11 @@ async function languageUpdate(ws, message) {
         event: 'languageUpdate',
         language: message.language
     };
+    aWss.clients.forEach(client => {
+        if (client.id === message.sessionId) {
+            client.language = message.language;
+        }
+    });
 
     try {
         await Session.update({language: message.language}, {where: {sessionStatic: message.sessionId + '.txt'}});
@@ -98,29 +115,53 @@ async function languageUpdate(ws, message) {
 
 async function connectionHandler(ws, message) {
     console.log('connection');
+    let colorUsers = [];
+    let users = [];
+    let infoUser = [];
+    let lang = [];
     ws.id = message.sessionId; 
     ws.username = message.username;
-    let users = [];
-    let first = false;
-    let doc = '';
-    let canEdit = true;
-    let usersSession;
-    let oneMoreUsers;
-    let language;
 
     aWss.clients.forEach(client => {
         if (client.id === message.sessionId) {
             users.push(client.username);
+            colorUsers.push(client.color);
+            lang.push(client.language);
         }
     });
+    ws.language = lang[0];
+
+    const arrColor = message.color;
+    const freeColors = arrColor.filter(el => !colorUsers.includes(el));
+    let color = freeColors[0];
+    ws.color = color;
+    aWss.clients.forEach(client => {
+        if (client.id === message.sessionId) {
+            infoUser.push({
+                username: client.username,
+                color: client.color
+            });
+        }
+    });
+
+    let first = false;
+    let doc = '';
+    let canEdit = true;
+    let usersSession;
+
+    aWss.clients.forEach(client => { 
+        if (client === ws) { 
+          client.send(JSON.stringify({event: 'colorUpdate', color: color})); 
+        } 
+    });
+
 
     try {
         doc = fs.readFileSync(path.resolve(__dirname, 'sessions', `${message.sessionId}` + '.txt')).toString(); // читаем файл
     } catch {
         fs.writeFileSync(path.resolve(__dirname, 'sessions', `${message.sessionId}` + '.txt'), ''); // если файла нет, то создаем его
         first = true;
-        oneMoreUsers = users;
-        language = 'javascript';
+        lang = ['javascript'];
     }
     
     try {
@@ -130,36 +171,23 @@ async function connectionHandler(ws, message) {
         }
         await Session.update({users: users}, {where: {sessionStatic: message.sessionId + '.txt'}});
         usersSession = await Session.findOne({where: {sessionStatic: message.sessionId + '.txt'}});
-        oneMoreUsers = usersSession.users;
-        language = usersSession.language;
+        lang = [usersSession.language];
     } catch {
         canEdit = true;
-        oneMoreUsers = users;
-        language = 'javascript';
     }
 
     const messageForClient = { // формируем сообщение для клиента 
         event: 'connection',
         username: message.username,
         input: doc,
-        language: language,
-        users: oneMoreUsers,
+        language: lang[0],
+        users: infoUser,
         first: first,
-        abilityToEdit: canEdit 
+        abilityToEdit: canEdit,
+        color: color
     };
 
     awssBroadcast(message, messageForClient, true, ws);
-}
-
-const disconnection = function(ws, message) {
-    let users;
-    aWss.clients.forEach(client => {
-        if (client.id === message.sessionId) {
-            users.push(client.username);
-        }
-    });
-
-    awssBroadcast(message, {event: 'disconnection', users: users}, true, ws);
 }
 
 //рассылаем сообщение всем клиентам
