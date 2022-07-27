@@ -31,7 +31,7 @@ export default function GoogleAuth(props) {
     useEffect(() => {
       /* global google */
       google.accounts.id.initialize({
-        client_id: "390701907032-mlb8sq8vi5aos6liqs4u4241fhj0bb92.apps.googleusercontent.com",
+        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
         callback: handleCallbackResponse
       })
   
