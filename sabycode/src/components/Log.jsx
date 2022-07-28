@@ -1,16 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Meeting from "./Meeting";
-import { useDispatch } from "react-redux";
 import { useGetConnectionsQuery } from "../redux/api/sabycodeApi";
-import { setIsUserConnected } from "../redux/features/authentication/authenticationSlice";
+import { useMemo } from "react";
 export default function Log(props) {
   const { data: sessions, isLoading } = useGetConnectionsQuery();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setIsUserConnected(false));
-/*   localStorage.isUserConnected = false; */
-  }, []);
-  console.log(sessions);
+  const memoizedMeetings = useMemo(() => {
+    return sessions?.map((session) => (
+      <Meeting
+        key={session.file}
+        time={formatDate(new Date(session.birthtime))}
+        edited={formatDate(new Date(session.updatetime))}
+        prog={session.language}
+        name={session.users.join(", ")}
+        id={session.file}
+      />
+    )).reverse()
+  }, [sessions]);
+
   function formatDate(date) {
     let dd = date.getDate();
     if (dd < 10) dd = '0' + dd;
@@ -44,16 +50,7 @@ export default function Log(props) {
             <td className="family">УЧАСТНИКИ</td>
           </tr>
         </tbody>
-        {sessions?.map((session) => (
-          <Meeting
-            key={session.file}
-            time={formatDate(new Date(session.birthtime))}
-            edited={formatDate(new Date(session.updatetime))}
-            prog={session.language}
-            name={session.users.join(", ")}
-            id={session.file}
-          />
-        ))}
+       {memoizedMeetings}
       </table>
     </div>
   );

@@ -9,11 +9,9 @@ import "ace-builds/src-noconflict/theme-textmate";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectAccessToken,
-  selectClosedMeeting,
   selectColor,
-  selectIsUserConnected,
   setColor,
-  setIsUserConnected,
+  selectUserName,
 } from "../redux/features/authentication/authenticationSlice";
 import { useAddFileMutation } from "../redux/api/sabycodeApi";
 import "../markers.css";
@@ -21,14 +19,10 @@ import {
   setCurrentUsers,
   removeUser,
 } from "../redux/features/users/usersSlice";
+import FontSizeSelect from "./FontSizeSelect";
+import { selectIsReadOnly, selectHasUserChangedMeeting, setHasUserChangedMeeting, setIsReadOnly, setIsMeetingAdmin} from "../redux/features/meeting/meetingSlice";
 
-function* generateSequence(start, end, step) {
-  for (let i = start; i <= end; i += step) {
-    yield i;
-  }
-}
 
-const fontSizeOptions = [...generateSequence(12, 32, 2)];
 
 export default function EditPage(props) {
   const socket = useRef();
@@ -38,42 +32,29 @@ export default function EditPage(props) {
   const { id } = useParams();
   const accessToken = useSelector(selectAccessToken);
   const [addFile, { isSuccess: isFileAdded }] = useAddFileMutation();
-  const isUserConnected = useSelector(selectIsUserConnected);
   const dispatch = useDispatch();
-  const [isReadOnly, setIsReadOnly] = useState(false);
   const [markers, setMarkers] = useState({});
-  const isClosedMeeting = useSelector(selectClosedMeeting);
+  const isReadOnly = useSelector(selectIsReadOnly);
   const color = useSelector(selectColor);
+  const hasUserChangedMeeting = useSelector(selectHasUserChangedMeeting);
+  const userName = useSelector(selectUserName);
+ /*  const fontSizes = useRef([...generateSequence(12, 32, 2)]); */
 
-  useEffect(() => {
-    const addFileAsync = async () => {
-      if (accessToken && !isUserConnected) {
-        await addFile({
-          id: `${id}.txt`,
-          user: accessToken,
-        }).unwrap();
-      }
-    };
-
-    addFileAsync();
-  }, [accessToken]);
-
-  useEffect(() => {
-    dispatch(setIsUserConnected(false)); //?Todo заменить на флаг при connection с веб-сокетом (флаг - есть ли уже такой файл)
-  }, []);
 
   useEffect(() => {
     if (isFileAdded) {
-      dispatch(setIsUserConnected(true));
+      socket.current.send(JSON.stringify({event:'firstUpdate', sessionId:id}));
     }
   }, [isFileAdded]);
 
   useEffect(() => {
-    if (isClosedMeeting) {
+    if (hasUserChangedMeeting) {
+      console.log('hi');
       socket.current?.send(JSON.stringify({ sessionId: id, event: "close" }));
+      dispatch(setHasUserChangedMeeting(false));
     }
-  }, [isClosedMeeting]);
-
+  }, [hasUserChangedMeeting]); 
+    
   useEffect(() => {
     socket.current = new WebSocket(process.env.REACT_APP_WS_BASE_URL);
     socket.current.onopen = (event) => {
@@ -88,7 +69,6 @@ export default function EditPage(props) {
     };
     socket.current.onmessage = (event) => {
       const messageJSON = JSON.parse(event.data);
-      console.log(messageJSON);
       switch (messageJSON.event) {
         case "editorUpdate":
           setText(messageJSON.input);
@@ -97,8 +77,7 @@ export default function EditPage(props) {
           connectionHandler(messageJSON);
           break;
         case "close":
-          socket.current.close();
-          setIsReadOnly(true);
+          dispatch(setIsReadOnly(messageJSON.abilityToEdit));
           break;
         case "markersUpdate":
           markersUpdateHandler(messageJSON);
@@ -139,16 +118,26 @@ export default function EditPage(props) {
   function connectionHandler(messageJSON) {
     setText(messageJSON.input);
     setLanguage(messageJSON.language);
-    if (!messageJSON.abilityToEdit) {
-      setIsReadOnly(true);
-      socket.current.close();
-    }
-    console.log(messageJSON.users);
+    dispatch(setIsReadOnly(!messageJSON.abilityToEdit));
     dispatch(setCurrentUsers(messageJSON.users));
+    const addFileAsync = async () => {
+      if (accessToken && messageJSON.first) {
+        await addFile({
+          id: `${id}.txt`,
+          user: accessToken,
+          creator: userName,
+        }).unwrap();
+      }
+    };
+
+    addFileAsync();
+    console.log(messageJSON.creator);
+    if (userName === messageJSON.creator) {
+      dispatch(setIsMeetingAdmin(true));
+    }
   }
 
   function markersUpdateHandler(message) {
-    console.log(message.color);
     setMarkers((markers) => {
       const modified = Object.assign({}, markers);
       modified[message.color] = message.markers;
@@ -171,9 +160,6 @@ export default function EditPage(props) {
     setText(newValue);
   }
 
-  function changeFontSize(event) {
-    setFontSize(parseInt(event.target.value));
-  }
 
   function changeLanguage(event) {
     setLanguage(event.target.value);
@@ -272,18 +258,9 @@ export default function EditPage(props) {
   return (
     <>
       <div className="buttons">
-        <select
-          className="select-fontSize"
-          id="fontSize"
-          onChange={(event) => changeFontSize(event)}
-        >
-          {fontSizeOptions.map((fontSize) => (
-            <option value={fontSize.toString()}>{fontSize}</option>
-          ))}
-        </select>
+        <FontSizeSelect start={12} end={32} step={2} setFontSize={setFontSize} fontSize={fontSize}/>
         <select
           value={language}
-          defaultValue={language}
           className="select-language"
           id="language"
           onChange={(event) => changeLanguage(event)}

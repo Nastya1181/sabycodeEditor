@@ -1,47 +1,29 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Routes, Route, BrowserRouter as Router, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, BrowserRouter as Router, Navigate } from 'react-router-dom';
 import AuthPage from './components/AuthPage';
 import EditPage from './components/EditPage'
 import GuestForm from './components/GuestForm';
 import Layout from './components/Layout';
 import RequireAuth from './components/RequireAuth';
-import { selectAccessToken, selectIsUserConnected, selectUserName } from './redux/features/authentication/authenticationSlice';
+import { selectAccessToken, selectUserName } from './redux/features/authentication/authenticationSlice';
 import Log from './components/Log'
 function App() {
   const name = useSelector(selectUserName);
   const token = useSelector(selectAccessToken);
-  const isUserConnected = useSelector(selectIsUserConnected);
-/*   const token = useSelector(selectAccessToken);
-  const name = useSelector(selectUserName);
-  const isUserConnected = useSelector(selectIsUserConnected); */
 
-/*   useEffect(() => {
+
+  useEffect(() => {
     localStorage.accessToken = token;
   }, [token]);
-
   useEffect(() => {
     localStorage.userName = name;
   }, [name]);
-
-  useEffect(() => {
-      localStorage.isUserConnected = isUserConnected;
-  }, [isUserConnected]); */
  /*  useEffect(() => {
-    console.log('hi check');
     localStorage.userName = name;
-  }, [name]); */
+  }, [name]);  */
 
-  useEffect(() => {
-    localStorage.accessToken = token;
-  }, [token]);
-  useEffect(() => {
-    console.log('hi check');
-    localStorage.userName = name;
-  }, [name]); 
-  useEffect(() => {
-    localStorage.isUserConnected = isUserConnected;
-}, [isUserConnected]);
+
 
   return (
     <Router>

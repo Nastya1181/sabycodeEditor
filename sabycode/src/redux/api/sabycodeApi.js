@@ -15,7 +15,7 @@ export const sabycodeApi = createApi({
         
             return headers
           },
-}),
+}),   
 tagTypes: ['Session'],
     endpoints: (builder) => ({
         login: builder.mutation({
@@ -29,13 +29,11 @@ tagTypes: ['Session'],
                 };
             },
         }),
-        //logout
         logout: builder.mutation({
             query() {
                 return {
                     url: '/user/logout',
                     method: 'POST',
-                   /*  body: data, */
                     credentials: 'include',
                     validateStatus: (response, result) =>  response.status === 200 && result
                 };

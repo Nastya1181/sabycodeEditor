@@ -1,7 +1,7 @@
 import { selectAccessToken, selectUserName } from "../redux/features/authentication/authenticationSlice";
 import { useSelector } from "react-redux/es/exports";
 import React, {  useState} from "react"
-import { Link , useLocation, useParams, useSearchParams} from "react-router-dom";
+import { Link , useLocation} from "react-router-dom";
 import LogOutButton from "./LogOutButton";
 import CloseButton from "./CloseButton";
 import Carousel from "./Carousel";
@@ -21,10 +21,8 @@ export default function Header() {
   }
 
   const currentUsers = useSelector(selectCurrentUsers);
-  console.log('cur', currentUsers);
   function Location() {
     const location = useLocation();
-    console.log(location);
     if (location.pathname === "/log") {
       return (
         <div>
@@ -36,10 +34,8 @@ export default function Header() {
  
   function Edit() {
     const locat = useLocation();
-    console.log(locat);
     let url = locat.pathname.split("/editor/");
     let a = ("/editor/"+url[1]);
-    console.log(a);
     if (locat.pathname === a){
         return <div>
           {userName && <Carousel show={3}>

@@ -4,11 +4,12 @@ import { sabycodeApi } from '../../api/sabycodeApi'
 const initialState = {
     userName: localStorage.getItem('userName') || "",
     accessToken: localStorage.getItem('accessToken') || "",
-    isUserConnected: sessionStorage.getItem('isUserConnected') || "",
-    closedMeeting: false,
-   /*  currentUsers: [], */
+  /*   isReadOnly: false,
+    hasUserChangedMeeting: false, */
     color: '',
+/*     isMeetingAdmin: false, */
   }
+
 
   export const authenticationSlice = createSlice({
     name: 'authentication',
@@ -20,19 +21,18 @@ const initialState = {
       setAccessToken: (state, action) => {
         state.accessToken = action.payload
       },
-      setIsUserConnected: (state, action) => {
-        state.isUserConnected = action.payload
-      },
-      setClosedMeeting: (state, action) => {
-        state.closedMeeting = action.payload
-      },
-     /*  setCurrentUsers: (state, action) => {
-        state.currentUsers = action.payload
+      /* setIsReadOnly: (state, action) => {
+        state.isReadOnly = action.payload
       }, */
       setColor: (state, action) => {
         state.color = action.payload
       },
-      /* logout: () => initialState, */
+     /*  setHasUserChangedMeeting: (state, action) => {
+        state.hasUserChangedMeeting = action.payload
+      },
+      setIsMeetingAdmin: (state, action) => {
+        state.isMeetingAdmin = action.payload
+      }, */
     },
     extraReducers: (builder) => {
       builder.addMatcher(
@@ -44,13 +44,13 @@ const initialState = {
     },
   })
   
-  export const { setUserName, setAccessToken, setIsUserConnected, setClosedMeeting, /* setCurrentUsers, */ setColor } = authenticationSlice.actions;
+  export const { setUserName, setAccessToken,/*  setIsReadOnly,  setHasUserChangedMeeting, */ setColor/* , setIsMeetingAdmin */ } = authenticationSlice.actions;
   
   export default authenticationSlice.reducer;
 
   export const selectUserName = (state) => state.authentication.userName;
   export const selectAccessToken = (state) => state.authentication.accessToken;
-  export const selectIsUserConnected = (state) => state.authentication.isUserConnected;
-  export const selectClosedMeeting = (state) => state.authentication.closedMeeting;
-  /* export const selectCurrentUsers = (state) => state.authentication.currentUsers; */
+  /* export const selectIsReadOnly = (state) => state.authentication.isReadOnly; */
+  /* export const selectHasUserChangedMeeting = (state) => state.authentication.hasUserChangedMeeting; */
   export const selectColor = (state) => state.authentication.color;
+  /* export const selectIsMeetingAdmin = (state) => state.authentication.isMeetingAdmin; */
