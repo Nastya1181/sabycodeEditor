@@ -13,6 +13,7 @@ class sessionController {
     async createSession(req, res) {
         try {
             const fileName = req.body.id;
+            const creator = req.body.creator;
             const user = req.user;
             const candidate = await Session.findOne({where: {sessionStatic: fileName}});
             if (candidate) {
@@ -27,6 +28,7 @@ class sessionController {
                     abilityToEdit: true,
                     language: 'javascript',
                     users: [],
+                    creator: creator,
                     sessionStatic: fileName
                 });
                 const sessionList = await SessionList.findOne({where: {userId: user}});

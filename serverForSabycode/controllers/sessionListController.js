@@ -20,9 +20,10 @@ class sessionListController {
             const session = await Session.findOne({where: {sessionStatic: stat}});
             const conn = await connection.findOne({where: {sessionListId: sessionList.id, sessionId: session.id}});
             if (conn) await conn.destroy();
-            const fileName = await connection.findAll({where: {sessionId: session.id}});
+            const fileName = await connection.findOne({where: {sessionId: session.id}});
             if (!fileName) {
                 await session.destroy();
+                console.log('Сессия удалена!');
                 fs.unlinkSync((path.resolve(__dirname, '..', 'sessions', `${stat}`)), () => {
                     console.log('Файл удален!');
                 });

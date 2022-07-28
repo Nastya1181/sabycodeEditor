@@ -57,6 +57,9 @@ app.ws('/', (ws) => {
             case 'markersUpdate':
                 markersUpdate(ws, messageJSON); 
                 break;
+            case 'firstUpdate':
+                firstUpdate(ws, messageJSON); 
+                break;
         }
     })
     ws.on('close', () => {
@@ -77,18 +80,42 @@ app.ws('/', (ws) => {
     })
 });
 
+async function firstUpdate(ws, message) {
+    let users = [];
+    aWss.clients.forEach(client => {
+        if (client.id === message.sessionId) {
+            users.push(client.username);
+        }
+    });
+    try {
+        await Session.update({users: users}, {where: {sessionStatic: message.sessionId + '.txt'}});
+    } catch {
+        console.log('не получилось')
+    }
+    const messageForClient = { 
+        event: 'firstUpdate'
+    };
+
+    awssBroadcast(message, messageForClient, true, ws);
+}
+
 const markersUpdate = function(ws, message) {
     awssBroadcast(message, message, false, ws);
 }
 
 async function close(ws, message) {
-    await Session.update({abilityToEdit: false}, {where: {sessionStatic: message.sessionId + '.txt'}});
+    const edit = await Session.findOne({where: {sessionStatic: `${message.sessionId}.txt`}});
+    if (edit.abilityToEdit === true) {
+        await Session.update({abilityToEdit: false}, {where: {sessionStatic: message.sessionId + '.txt'}});
+    } else {
+        await Session.update({abilityToEdit: true}, {where: {sessionStatic: message.sessionId + '.txt'}});
+    }
     const messageForClient = {
         event: 'close',
-        abilityToEdit: false
+        abilityToEdit: edit.abilityToEdit
     };
     
-    awssBroadcast(message, messageForClient, true, ws);
+    awssBroadcast(message, messageForClient, false, ws);
 }
 
 // изменение языка
@@ -148,6 +175,7 @@ async function connectionHandler(ws, message) {
     let doc = '';
     let canEdit = true;
     let usersSession;
+    let creator = 'first';
 
     aWss.clients.forEach(client => { 
         if (client === ws) { 
@@ -162,18 +190,20 @@ async function connectionHandler(ws, message) {
         fs.writeFileSync(path.resolve(__dirname, 'sessions', `${message.sessionId}` + '.txt'), ''); // если файла нет, то создаем его
         first = true;
         lang = ['javascript'];
+        creator = message.username;
     }
     
     try {
         const abilityToEdit = await Session.findOne({where: {sessionStatic: `${message.sessionId}.txt`}});
         if (abilityToEdit.abilityToEdit === false) {
             canEdit = false;
-        }
+        }   
         await Session.update({users: users}, {where: {sessionStatic: message.sessionId + '.txt'}});
         usersSession = await Session.findOne({where: {sessionStatic: message.sessionId + '.txt'}});
         lang = [usersSession.language];
+        creator = abilityToEdit.creator;
     } catch {
-        canEdit = true;
+        console.log('не получилось')
     }
 
     const messageForClient = { // формируем сообщение для клиента 
@@ -184,7 +214,8 @@ async function connectionHandler(ws, message) {
         users: infoUser,
         first: first,
         abilityToEdit: canEdit,
-        color: color
+        color: color,
+        creator: creator
     };
 
     awssBroadcast(message, messageForClient, true, ws);

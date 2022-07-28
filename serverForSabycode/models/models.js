@@ -23,6 +23,7 @@ const Session = sequelize.define('session', {
     abilityToEdit: {type: DataTypes.BOOLEAN, allowNull: false},
     language: {type: DataTypes.STRING},
     users: {type: DataTypes.ARRAY(DataTypes.STRING)},
+    creator: {type: DataTypes.STRING, allowNull: false},
     sessionStatic: {type: DataTypes.STRING, unique: true} // название сессии
 })
 
