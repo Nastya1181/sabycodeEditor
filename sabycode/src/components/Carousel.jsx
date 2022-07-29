@@ -22,7 +22,7 @@ const Carousel = (props) => {
     return (
         <div className="carousel-container">
             <div className="carousel-wrapper">
-                        { currentIndex < (length - show + 1) &&<button onClick={prev} className="left-arrow">
+                        { children.length >3 &&<button onClick={prev} className="left-arrow">
                             &lt;
                     </button>}
                     <div className="carousel-content-wrapper"> 

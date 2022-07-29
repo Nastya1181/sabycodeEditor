@@ -26,7 +26,9 @@ export default function Header() {
     if (location.pathname === "/log") {
       return (
         <div>
-          <CreateMeeting /> {/* <Backmain /> */}
+          <LogOutButton />
+          <CreateMeeting /> 
+          {/* <Backmain /> */}
         </div>
       );
     }
@@ -42,6 +44,7 @@ export default function Header() {
                     {currentUsers?.map(user =>
                   <Member name={user.username} key={Date.now() + Math.random()} color={user.color}/>)}
                   </Carousel>}
+                  <div className="possion__buttons">
                   {userName && (
                    <>
                       <button
@@ -53,12 +56,13 @@ export default function Header() {
                     >
                     <div className="invite-button__text">{buttonText}</div>
                       </button>
-            <LogOutButton />
           </>
       )}
       {/* {accessToken && <LogButton/>} */}
-      {accessToken && <CloseButton/>}
-      {accessToken &&  <Link  className="magazine__log" to='/log'>Журнал событий</Link>}
+      {accessToken && <CloseButton/>} 
+      {accessToken && <Link  className="magazine__log" to='/log'>Журнал событий</Link>}
+      <LogOutButton />
+      </div>
      </div>
     }
   }
