@@ -59,9 +59,9 @@ button{cursor: pointer;}
     overflow-x: hidden;
 }
 .auth{
-    margin:0 auto;
-    padding-top: 57px;
-    width: 280px;
+    margin:0 auto !important;
+    padding-top: 57px !important;
+    width: 280px !important;
 }
 
 .auth-header {
@@ -83,13 +83,19 @@ button{cursor: pointer;}
 .auth-sbis {
 /* Текст-адрес */
     
-    margin-top: 54px;
+    margin-top: 30px;
     width: 100%;
     height: 40px;
     box-sizing: border-box;
     background: #3B6F99;
     border-radius: 5px;
 }
+
+.auth-google {     
+        margin-top: 54px;
+        width: 100%;
+        height: 40px;   
+    }
 
 .auth-sbis__text {
     padding-top: 12px;
@@ -114,8 +120,8 @@ button{cursor: pointer;}
 .auth__line{
     text-align: center;
     overflow: hidden;
-    padding-top: 19px;
-    padding-bottom: 19px;
+    padding-top: 24px;
+    padding-bottom: 24px;
 }
 .auth__line span{
     display: inline-block;

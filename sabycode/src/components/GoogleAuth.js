@@ -38,12 +38,13 @@ export default function GoogleAuth(props) {
       google.accounts.id.renderButton(
         document.getElementById("googleSignIn"),
         {
-          theme: "outline", size: "large", width: '280px', height: '40px'
+          theme: "outline",  width: 280,
+          height: 45, type: "standard", size: 'large'
         }
       );
      
     }, []);
 
 
-return <div id="googleSignIn"></div>
+return <div className='auth-google' id="googleSignIn"></div>
 }

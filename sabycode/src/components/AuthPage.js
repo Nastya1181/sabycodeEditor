@@ -11,16 +11,16 @@ export default function AuthPage(props) {
   const from = location.state?.from?.pathname || "/";
 
   return (
-    <>
+    <> 
     <div className="auth">
-      <div className="auth-header">Аутентификация</div>
+      <div className="auth-header">Вход Sabycode</div>
       <GoogleAuth from={from}/>
-      <button className="auth-sbis">
+      {/* <button className="auth-sbis">
         <div className="auth-sbis__logo"></div>
         <div className="auth-sbis__text">Авторизоваться через СБИС</div>
-      </button>
+      </button> */}
       <div className="auth__line"><span>или<br/></span></div>
-      <Link className="auth-guest" to="/guestLogin"  replace state={{ from: from }} 
+      <Link className="auth-guest" to="/guestLogin" state={{ from: from }} 
         >
         <div className="auth-guest__text">Войти, как гость</div>
       </Link>
