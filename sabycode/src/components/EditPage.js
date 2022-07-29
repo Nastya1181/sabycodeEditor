@@ -63,7 +63,7 @@ export default function EditPage(props) {
           sessionId: id,
           event: "connection",
           username: localStorage.userName,
-          color: ["pink", "green", "yellow", "purple"],
+          color: ["pink", "green", "orange", "blue", "aqua", "yellow"],
         })
       );
     };

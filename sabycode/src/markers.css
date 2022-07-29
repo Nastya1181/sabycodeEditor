@@ -5,13 +5,13 @@
 
 .user-cursor_green {
     position: absolute;
-    background: rgb(6, 214, 6);
-    width: 2px !important;
+    background: #52AA47;
+    width: 3px !important;
 }
 
 .user-selection_yellow {
     position: absolute;
-    background: rgba(233, 243, 50, 0.233);
+    background: rgba(233, 243, 50, 0.432);
 }
 
 .user-cursor_yellow {
@@ -22,7 +22,7 @@
 
 .user-selection_pink {
     position: absolute;
-    background: rgb(250, 144, 227);
+    background: rgba(250, 144, 227, 0.562);
 }
 
 .user-cursor_pink {
@@ -31,13 +31,35 @@
     width: 3px !important;
 }
 
-.user-selection_purple {
+.user-selection_orange {
     position: absolute;
-    background:  rgba(188, 49, 252, 0.486);
+    background:  #f681218e;
 }
 
-.user-cursor_purple{
+.user-cursor_orange{
     position: absolute;
-    background: rgb(188, 49, 252);
+    background:  #F68121;
+    width: 3px !important;
+}
+
+.user-selection_aqua {
+    position: absolute;
+    background:  #55b3ad94;
+}
+
+.user-cursor_aqua {
+    position: absolute;
+    background: #55B3AC;
+    width: 3px !important;
+}
+
+.user-selection_blue {
+    position: absolute;
+    background: #3ea7f8a4;
+}
+
+.user-cursor_blue{
+    position: absolute;
+    background: #3EA7F8;
     width: 3px !important;
 }
