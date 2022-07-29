@@ -18,7 +18,7 @@ class sessionController {
             const candidate = await Session.findOne({where: {sessionStatic: fileName}});
             if (candidate) {
                 const sessionList = await SessionList.findOne({where: {userId: user}});
-                const candidateConnection = await connection.findOne({where: {sessionListId: sessionList.id}});
+                const candidateConnection = await connection.findOne({where: {sessionListId: sessionList.id, sessionId: candidate.id}});
                 if (!candidateConnection) {
                     await connection.create({sessionListId: sessionList.id, sessionId: candidate.id});
                     return res.status(200).json({message: "Соединение установлено!"});
