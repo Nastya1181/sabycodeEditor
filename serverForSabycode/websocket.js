@@ -88,7 +88,10 @@ async function firstUpdate(ws, message) {
         }
     });
     try {
-        await Session.update({users: users}, {where: {sessionStatic: message.sessionId + '.txt'}});
+        const abilityToEdit = await Session.findOne({where: {sessionStatic: `${message.sessionId}.txt`}});
+        if (abilityToEdit.users.length < users.length) {
+            await Session.update({users: users}, {where: {sessionStatic: message.sessionId + '.txt'}});
+        }
     } catch {
         console.log('не получилось')
     }
@@ -198,7 +201,9 @@ async function connectionHandler(ws, message) {
         if (abilityToEdit.abilityToEdit === false) {
             canEdit = false;
         }   
-        await Session.update({users: users}, {where: {sessionStatic: message.sessionId + '.txt'}});
+        if (abilityToEdit.users.length < users.length) {
+            await Session.update({users: users}, {where: {sessionStatic: message.sessionId + '.txt'}});
+        }
         usersSession = await Session.findOne({where: {sessionStatic: message.sessionId + '.txt'}});
         lang = [usersSession.language];
         creator = abilityToEdit.creator;
