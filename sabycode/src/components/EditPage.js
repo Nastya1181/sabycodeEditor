@@ -121,7 +121,7 @@ export default function EditPage(props) {
     dispatch(setIsReadOnly(!messageJSON.abilityToEdit));
     dispatch(setCurrentUsers(messageJSON.users));
     const addFileAsync = async () => {
-      if (accessToken && messageJSON.first) {
+      if (accessToken && userName === messageJSON.username) {
         await addFile({
           id: `${id}.txt`,
           user: accessToken,
@@ -129,14 +129,14 @@ export default function EditPage(props) {
         }).unwrap();
       }
     };
-
+ 
     addFileAsync();
     console.log(messageJSON.creator);
     if (userName === messageJSON.creator) {
       dispatch(setIsMeetingAdmin(true));
     }
   }
-
+ 
   function markersUpdateHandler(message) {
     setMarkers((markers) => {
       const modified = Object.assign({}, markers);
