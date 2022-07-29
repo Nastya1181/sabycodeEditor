@@ -132,9 +132,7 @@ export default function EditPage(props) {
  
     addFileAsync();
     console.log(messageJSON.creator);
-    if (userName === messageJSON.creator) {
-      dispatch(setIsMeetingAdmin(true));
-    }
+    dispatch(setIsMeetingAdmin(userName === messageJSON.creator));
   }
  
   function markersUpdateHandler(message) {
